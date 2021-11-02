@@ -24,7 +24,10 @@
     "discord-api-types": "^0.24.0",
     "discord.js": "^13.2.0",
     "dotenv": "^10.0.0",
+    "ffmpeg": "^0.0.4",
     "filesystem": "^1.0.1",
-    "fs": "^0.0.1-security"
+    "fs": "^0.0.1-security",
+    "ytdl": "^1.4.1",
+    "ytdl-core": "^4.9.1"
   }
 }
