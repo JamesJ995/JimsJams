@@ -104,3 +104,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# video downloaded by this app
+video.mp4
