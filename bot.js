@@ -1,13 +1,15 @@
 require("dotenv").config(); //initialize dotenv
 const fs = require("fs");
-const { Client, Intents, Collection } = require("discord.js");
+const { Client, Intents, Collection, VoiceChannel } = require("discord.js");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
+const { joinVoiceChannel, createAudioPlayer, createAudioResource,  entersState, StreamType, AudioPlayerStatus } = require("@discordjs/voice")
 const TOKEN = process.env.TOKEN;
 const GUILD_ID = process.env.GUILD_ID;
 
 const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES],
+  partials: [Intents.FLAGS.CHANNEL]
 });
 
 const commands = [];
@@ -66,6 +68,14 @@ client.on("interactionCreate", async (interaction) => {
       ephemeral: true,
     });
   }
+});
+
+client.on('messageCreate', message => {
+  const connection = joinVoiceChannel({
+    channelId: 186894788371546112,
+    guildId: 162336291470573568,
+    adapterCreator: interaction.guild.voiceAdapterCreator,
+  });
 });
 
 client.login(TOKEN);
