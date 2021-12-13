@@ -27,7 +27,16 @@ const commands = [
       },
     ],
   },
+  {
+    name: 'stop',
+    description: 'stop the player',
+  }
 ];
+
+ffmpeg_options = {
+  'options': '-vn',
+  "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
+}
 
 const rest = new REST({ version: '9' }).setToken(DISCORD_TOKEN);
 
@@ -89,9 +98,8 @@ client.on('interactionCreate', async (interaction) => {
       if (!queue.connection)
         await queue.connect(interaction.member.voice.channel);
     } catch {
-      // queue.destroy();
-      // return await interaction.reply({ content: "Could not join your voice channel!", ephemeral: true });
-      console.log('We have hit this catch');
+      queue.destroy();
+      return await interaction.reply({ content: "Could not join your voice channel!", ephemeral: true });
     }
 
     await interaction.deferReply();
@@ -114,9 +122,40 @@ client.on('interactionCreate', async (interaction) => {
       content: `⏱️ | Loading track **${searchResult.tracks[0]}**!`,
     });
   }
+
+  if(interaction.commandName === 'stop') {
+    const queue = client.player.getQueue(interaction.guildId);
+    queue.destroy();
+  }
 });
 
 client.login(DISCORD_TOKEN);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // require('dotenv').config(); //initialize dotenv
 // const fs = require('fs');
