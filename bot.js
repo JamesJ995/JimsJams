@@ -30,13 +30,13 @@ const commands = [
   {
     name: 'stop',
     description: 'stop the player',
-  }
+  },
 ];
 
 ffmpeg_options = {
-  'options': '-vn',
-  "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
-}
+  options: '-vn',
+  before_options: '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
+};
 
 const rest = new REST({ version: '9' }).setToken(DISCORD_TOKEN);
 
@@ -67,6 +67,13 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async (interaction) => {
+  if (interaction === 'ping') {
+    return interaction.reply({
+      content: 'pong',
+      ephemeral: true,
+    });
+  }
+
   if (!interaction.isCommand()) return;
 
   // /play track:Despacito
@@ -99,7 +106,10 @@ client.on('interactionCreate', async (interaction) => {
         await queue.connect(interaction.member.voice.channel);
     } catch {
       queue.destroy();
-      return await interaction.reply({ content: "Could not join your voice channel!", ephemeral: true });
+      return await interaction.reply({
+        content: 'Could not join your voice channel!',
+        ephemeral: true,
+      });
     }
 
     await interaction.deferReply();
@@ -108,14 +118,14 @@ client.on('interactionCreate', async (interaction) => {
         requestedBy: interaction.user,
         searchEngine: QueryType.AUTO,
       })
-      .then(console.log("nice"));
+      .then(console.log('nice'));
     if (!searchResult)
       return await interaction.followUp({
         content: `❌ | Track **${query}** not found!`,
       });
-      console.log(searchResult);
-    searchResult.playlist
-      queue.play(searchResult.tracks[0]);
+    console.log(searchResult);
+    searchResult.playlist;
+    queue.play(searchResult.tracks[0]);
     if (!queue.playing) await queue.play();
 
     return await interaction.followUp({
@@ -123,39 +133,13 @@ client.on('interactionCreate', async (interaction) => {
     });
   }
 
-  if(interaction.commandName === 'stop') {
+  if (interaction.commandName === 'stop') {
     const queue = client.player.getQueue(interaction.guildId);
     queue.destroy();
   }
 });
 
 client.login(DISCORD_TOKEN);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // require('dotenv').config(); //initialize dotenv
 // const fs = require('fs');
