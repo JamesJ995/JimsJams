@@ -1,6 +1,7 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { Client, Intents } = require('discord.js');
+const keepActive = require('http');
 const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
@@ -13,6 +14,10 @@ require('dotenv').config();
 const CLIENT_ID = process.env.CLIENT_ID;
 const GUILD_ID = process.env.GUILD_ID;
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
+
+setInterval(function () {
+  keepActive.get('http://<your app name>.herokuapp.com');
+}, 300000); // every 5 minutes (300000)
 
 const commands = [
   {
@@ -117,12 +122,10 @@ client.on('interactionCreate', async (interaction) => {
     }
 
     await interaction.deferReply();
-    const searchResult = await player
-      .search(query, {
-        requestedBy: interaction.user,
-        searchEngine: QueryType.AUTO,
-      })
-      .then(console.log('nice'));
+    const searchResult = await player.search(query, {
+      requestedBy: interaction.user,
+      searchEngine: QueryType.AUTO,
+    });
     if (!searchResult)
       return await interaction.followUp({
         content: `❌ | Track **${query}** not found!`,
