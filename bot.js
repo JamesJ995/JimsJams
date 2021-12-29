@@ -16,7 +16,7 @@ const GUILD_ID = process.env.GUILD_ID;
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
 setInterval(function () {
-  keepActive.get('http://<your app name>.herokuapp.com');
+  keepActive.get('https://jims-jams.herokuapp.com/');
 }, 300000); // every 5 minutes (300000)
 
 const commands = [
