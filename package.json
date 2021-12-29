@@ -32,6 +32,6 @@
     "filesystem": "^1.0.1",
     "fs": "^0.0.1-security",
     "ytdl": "^1.4.1",
-    "ytdl-core": "^4.9.1"
+    "ytdl-core": "^4.9.2"
   }
 }

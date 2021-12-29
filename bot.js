@@ -31,6 +31,10 @@ const commands = [
     name: 'stop',
     description: 'stop the player',
   },
+  {
+    name: 'ping',
+    description: 'ping the bot',
+  },
 ];
 
 ffmpeg_options = {
@@ -67,15 +71,15 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async (interaction) => {
-  if (interaction === 'ping') {
+  if (!interaction.isCommand()) return;
+
+  //PING COMMAND
+  if (interaction.commandName === 'ping') {
     return interaction.reply({
       content: 'pong',
       ephemeral: true,
     });
   }
-
-  if (!interaction.isCommand()) return;
-
   // /play track:Despacito
   // will play "Despacito" in the voice channel
   if (interaction.commandName === 'play') {
@@ -134,8 +138,11 @@ client.on('interactionCreate', async (interaction) => {
   }
 
   if (interaction.commandName === 'stop') {
-    const queue = client.player.getQueue(interaction.guildId);
+    const queue = player.getQueue(interaction.guildId);
     queue.destroy();
+    return interaction.reply({
+      content: `🛑 | Track has been stopped!!`,
+    });
   }
 });
 
